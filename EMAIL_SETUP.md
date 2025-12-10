@@ -44,19 +44,14 @@ For production, you should verify your domain:
 4. Add the DNS records provided by Resend to your domain's DNS settings
 5. Wait for verification (usually takes a few minutes)
 
-Once verified, update the `from` email in:
-- `src/app/api/waitlist/welcome-email/route.ts`
-- `src/app/api/waitlist/launch-email/route.ts`
-
-Change from:
+Once verified, the emails are already configured to use:
 ```typescript
-from: 'SourSync <onboarding@resend.dev>',
+from: 'SourSync <noreply@soursync.com>',
 ```
 
-To:
-```typescript
-from: 'SourSync <noreply@soursync.com>', // or your verified domain
-```
+**Important**: Make sure to verify your `soursync.com` domain in Resend before deploying. Until the domain is verified, you may need to temporarily use `onboarding@resend.dev` or another verified domain.
+
+The email templates also include the SourSync logo from your public assets. Make sure `/soursync-logo.svg` is accessible at your `NEXT_PUBLIC_APP_URL`.
 
 ### 5. Test the Setup
 

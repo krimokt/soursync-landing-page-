@@ -47,10 +47,14 @@ export async function POST(request: Request) {
       )
     }
 
+    // Get the app URL for logo
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://soursync.com'
+    const logoUrl = `${appUrl}/soursync-logo.svg`
+
     // Send launch emails to all waitlist users
     const emailPromises = waitlistEntries.map((entry) =>
       resend.emails.send({
-        from: 'SourSync <onboarding@resend.dev>', // Update with your verified domain
+        from: 'SourSync <noreply@soursync.com>',
         to: entry.email,
         subject: '🎉 SourSync is Now Live! Your Early Access Awaits',
         html: `
@@ -61,14 +65,20 @@ export async function POST(request: Request) {
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>SourSync is Live!</title>
             </head>
-            <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0a0a0a; color: #ededed;">
-              <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #0a0a0a;">
+            <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5; color: #1a1a1a;">
+              <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f5f5f5;">
                 <tr>
                   <td align="center" style="padding: 40px 20px;">
-                    <table role="presentation" style="max-width: 600px; width: 100%; border-collapse: collapse; background-color: #1a1a1a; border-radius: 12px; border: 1px solid #2a2a2a;">
+                    <table role="presentation" style="max-width: 600px; width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                      <!-- Logo Header -->
+                      <tr>
+                        <td style="padding: 40px 40px 30px; text-align: center; border-bottom: 1px solid #e5e5e5;">
+                          <img src="${logoUrl}" alt="SourSync" style="max-width: 200px; height: auto; display: block; margin: 0 auto;" />
+                        </td>
+                      </tr>
                       <!-- Header -->
                       <tr>
-                        <td style="padding: 40px 40px 20px; text-align: center;">
+                        <td style="padding: 30px 40px 20px; text-align: center;">
                           <h1 style="margin: 0; font-size: 32px; font-weight: 700; color: #06b6d4; letter-spacing: -0.5px;">
                             🚀 SourSync is Now Live!
                           </h1>
@@ -78,10 +88,10 @@ export async function POST(request: Request) {
                       <!-- Content -->
                       <tr>
                         <td style="padding: 20px 40px;">
-                          <p style="margin: 0 0 20px; font-size: 18px; line-height: 1.6; color: #ededed; font-weight: 500;">
+                          <p style="margin: 0 0 20px; font-size: 18px; line-height: 1.6; color: #1a1a1a; font-weight: 500;">
                             Great news! SourSync is officially live and ready for you.
                           </p>
-                          <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #d4d4d8;">
+                          <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #1a1a1a;">
                             As a waitlist member, you have <strong style="color: #06b6d4;">priority access</strong> to start using SourSync right away. 
                             All the features you've been waiting for are now available.
                           </p>
@@ -94,10 +104,10 @@ export async function POST(request: Request) {
                               Access SourSync Now →
                             </a>
                           </div>
-                          <p style="margin: 20px 0 0; font-size: 16px; line-height: 1.6; color: #d4d4d8;">
-                            <strong style="color: #ededed;">What you can do now:</strong>
+                          <p style="margin: 20px 0 0; font-size: 16px; line-height: 1.6; color: #1a1a1a;">
+                            <strong style="color: #1a1a1a;">What you can do now:</strong>
                           </p>
-                          <ul style="margin: 16px 0; padding-left: 24px; color: #d4d4d8; line-height: 1.8;">
+                          <ul style="margin: 16px 0; padding-left: 24px; color: #1a1a1a; line-height: 1.8;">
                             <li>Create professional quotations in seconds</li>
                             <li>Manage your entire sourcing workflow</li>
                             <li>Track orders from supplier to delivery</li>
@@ -105,9 +115,9 @@ export async function POST(request: Request) {
                             <li>Organize all your sourcing data in one place</li>
                           </ul>
                           ${entry.plan_interest ? `
-                          <div style="background-color: #06b6d4/10; border: 1px solid #06b6d4/20; border-radius: 8px; padding: 16px; margin: 20px 0;">
+                          <div style="background-color: #e0f7fa; border: 1px solid #06b6d4; border-radius: 8px; padding: 16px; margin: 20px 0;">
                             <p style="margin: 0; font-size: 14px; color: #06b6d4; font-weight: 500;">
-                              Your interested plan: <span style="color: #ededed;">${entry.plan_interest}</span>
+                              Your interested plan: <span style="color: #1a1a1a;">${entry.plan_interest}</span>
                             </p>
                           </div>
                           ` : ''}
@@ -117,23 +127,21 @@ export async function POST(request: Request) {
                       <!-- Support -->
                       <tr>
                         <td style="padding: 20px 40px 40px; text-align: center;">
-                          <p style="margin: 0 0 16px; font-size: 14px; color: #a1a1aa;">
+                          <p style="margin: 0 0 16px; font-size: 14px; color: #666666;">
                             Need help getting started? We're here for you!
                           </p>
-                          <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #2a2a2a;">
-                            <p style="margin: 0; font-size: 12px; color: #71717a;">
+                          <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e5e5;">
+                            <p style="margin: 0; font-size: 12px; color: #666666;">
                               Questions? Reply to this email or visit our help center.
                             </p>
                           </div>
                         </td>
                       </tr>
-                    </table>
-                    
-                    <!-- Footer -->
-                    <table role="presentation" style="max-width: 600px; width: 100%; margin-top: 20px;">
+                      
+                      <!-- Footer -->
                       <tr>
-                        <td style="padding: 20px; text-align: center;">
-                          <p style="margin: 0; font-size: 12px; color: #71717a;">
+                        <td style="padding: 30px 40px; background-color: #f9f9f9; border-top: 1px solid #e5e5e5; border-radius: 0 0 8px 8px;">
+                          <p style="margin: 0; font-size: 12px; color: #666666; text-align: center;">
                             © ${new Date().getFullYear()} SourSync. All rights reserved.
                           </p>
                         </td>
