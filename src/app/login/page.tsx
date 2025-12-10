@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
@@ -127,4 +127,33 @@ export default function LoginPage() {
     </main>
   )
 }
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <main className="relative bg-background min-h-screen flex items-center justify-center px-4">
+        <div className="w-full max-w-md">
+          <div className="flex justify-center mb-8">
+            <Image
+              src="/soursync-logo.svg"
+              alt="SourSync"
+              width={180}
+              height={40}
+              className="brightness-0 invert"
+            />
+          </div>
+          <Card className="border-border bg-card">
+            <CardContent className="p-12 text-center">
+              <div className="w-8 h-8 border-4 border-[rgb(6,182,212)]/30 border-t-[rgb(6,182,212)] rounded-full animate-spin mx-auto"></div>
+              <p className="mt-4 text-muted-foreground">Loading...</p>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    }>
+      <LoginForm />
+    </Suspense>
+  )
+}
+
 

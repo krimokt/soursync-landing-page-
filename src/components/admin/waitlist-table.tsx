@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/client';
 import { motion } from 'motion/react';
-import { Mail, Calendar, Tag, Download } from 'lucide-react';
+import { Mail, Calendar, Tag, Download, Rocket, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 
@@ -20,6 +20,8 @@ export function WaitlistTable() {
   const [entries, setEntries] = useState<WaitlistEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sendingLaunchEmails, setSendingLaunchEmails] = useState(false);
+  const [launchEmailResult, setLaunchEmailResult] = useState<string | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -63,6 +65,39 @@ export function WaitlistTable() {
     a.download = `waitlist-${format(new Date(), 'yyyy-MM-dd')}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
+  };
+
+  const sendLaunchEmails = async () => {
+    if (!confirm(`Are you sure you want to send launch emails to all ${entries.length} waitlist members?`)) {
+      return;
+    }
+
+    setSendingLaunchEmails(true);
+    setLaunchEmailResult(null);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/waitlist/launch-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send launch emails');
+      }
+
+      setLaunchEmailResult(
+        `✅ Successfully sent ${data.successful} emails. ${data.failed > 0 ? `${data.failed} failed.` : ''}`
+      );
+    } catch (err: any) {
+      setError(err.message || 'Failed to send launch emails');
+    } finally {
+      setSendingLaunchEmails(false);
+    }
   };
 
   if (loading) {
@@ -138,8 +173,25 @@ export function WaitlistTable() {
         </Card>
       </div>
 
-      {/* Export Button */}
-      <div className="flex justify-end">
+      {/* Action Buttons */}
+      <div className="flex justify-between items-center gap-4">
+        <Button
+          onClick={sendLaunchEmails}
+          disabled={sendingLaunchEmails || entries.length === 0}
+          className="bg-gradient-to-r from-[rgb(6,182,212)] to-blue-600 hover:from-[rgb(6,182,212)]/90 hover:to-blue-600/90 text-white border-0"
+        >
+          {sendingLaunchEmails ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              <Rocket className="w-4 h-4 mr-2" />
+              Send Launch Emails ({entries.length})
+            </>
+          )}
+        </Button>
         <Button
           onClick={exportToCSV}
           variant="outline"
@@ -149,6 +201,17 @@ export function WaitlistTable() {
           Export to CSV
         </Button>
       </div>
+
+      {/* Launch Email Result */}
+      {launchEmailResult && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400"
+        >
+          {launchEmailResult}
+        </motion.div>
+      )}
 
       {/* Table */}
       <Card className="bg-card border-border shadow-lg">
@@ -209,4 +272,5 @@ export function WaitlistTable() {
     </div>
   );
 }
+
 

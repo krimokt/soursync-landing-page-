@@ -13,3 +13,4 @@ export default async function AnalyticsPage() {
   return <AnalyticsDashboard user={user} />
 }
 
+

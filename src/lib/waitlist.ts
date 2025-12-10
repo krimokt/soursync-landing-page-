@@ -32,6 +32,25 @@ export async function addToWaitlist(data: WaitlistEntry) {
     throw new Error(error.message || 'Failed to join waitlist')
   }
 
+  // Send welcome email (fire and forget - don't block on email errors)
+  if (result) {
+    try {
+      await fetch('/api/waitlist/welcome-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: result.email,
+          planInterest: result.plan_interest,
+        }),
+      })
+    } catch (emailError) {
+      // Log error but don't fail the waitlist signup
+      console.error('Failed to send welcome email:', emailError)
+    }
+  }
+
   return result
 }
 
@@ -46,4 +65,5 @@ export function trackCTAClick(ctaName: string, planName?: string) {
     })
   }
 }
+
 

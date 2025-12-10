@@ -1,11 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable SWC minification (default in Next.js 16+)
-  swcMinify: true,
-  
-  // Compression enabled by default in Next.js 16+
-  compress: true,
+  // SWC minification is enabled by default in Next.js 16+
+  // Compression is enabled by default in Next.js 16+
   
   // Remove X-Powered-By header for security
   poweredByHeader: false,
