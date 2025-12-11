@@ -27,7 +27,7 @@ const notoSansSC = Noto_Sans_SC({
 
 export const metadata: Metadata = {
   verification: {
-    google: '7_bZOWyQUW8GTWsqUleYgooQyII5ivMZhh70tjhTlWo',
+    google: '5WX0RsC0ggsgDZK4zndZfeRGMMTKlixAa-h-s9Gkl7Q',
   },
 };
 
