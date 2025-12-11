@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   title: 'SourSync | Quotations, Orders & Logistics in One Platform',
   description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
   verification: {
-    google: '5WX0RsC0ggsgDZK4zndZfeRGMMTKlixAa-h-s9Gkl7Q',
+    google: '7_bZOWyQUW8GTWsqUleYgooQyII5ivMZhh70tjhTlWo',
   },
   openGraph: {
     title: 'SourSync | Quotations, Orders & Logistics in One Platform',
