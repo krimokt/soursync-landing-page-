@@ -29,16 +29,31 @@ export async function generateMetadata({ params }: PageProps) {
   
   try {
     const post = getPostBySlug(slug)
+    const url = `https://soursync.com/blog/${slug}`
     
     return {
-      title: `${post.title} - SourSync Blog`,
+      title: post.title,
       description: post.description,
+      alternates: {
+        canonical: url,
+      },
       openGraph: {
         title: post.title,
         description: post.description,
         type: 'article',
         publishedTime: post.date,
         tags: post.tags,
+        url: url,
+        siteName: 'SourSync',
+        locale: 'en_US',
+        images: [
+          {
+            url: 'https://soursync.com/soursync-logo.svg', // Fallback image if no cover
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
       },
       twitter: {
         card: 'summary_large_image',
@@ -63,8 +78,43 @@ export default async function BlogPostPage({ params }: PageProps) {
     notFound()
   }
 
+  // Structured Data (JSON-LD) for SEO
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    image: 'https://soursync.com/soursync-logo.svg', // Replace with post.cover if available
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Organization',
+      name: 'SourSync Team',
+      url: 'https://soursync.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'SourSync',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://soursync.com/soursync-logo.svg',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://soursync.com/blog/${slug}`,
+    },
+    keywords: post.tags.join(', '),
+  }
+
   return (
     <main className="relative bg-background min-h-screen">
+      {/* Add JSON-LD to the page */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
       <HeroHeader />
       
       <article className="relative z-10 pt-24 pb-16">

@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import type { Metadata } from "next";
 import { Hero2 } from "@/components/ui/hero-2-1";
 import { HeroHeader } from "@/components/ui/hero-header";
 import { ScrollRestore } from "@/components/ui/scroll-restore";
@@ -6,6 +7,21 @@ import { Footer } from "@/components/ui/footer";
 import { ChatSupportWidget } from "@/components/ui/chat-support-widget";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import { CTASection } from "@/components/ui/cta-section";
+
+export const metadata: Metadata = {
+  title: 'SourSync | Quotations, Orders & Logistics in One Platform',
+  description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
+  openGraph: {
+    title: 'SourSync | Quotations, Orders & Logistics in One Platform',
+    description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SourSync | Quotations, Orders & Logistics in One Platform',
+    description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
+  },
+};
 
 // Lazy load below-fold sections for better initial load performance
 const FeaturesSection = dynamic(

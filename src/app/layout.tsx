@@ -26,8 +26,20 @@ const notoSansSC = Noto_Sans_SC({
 });
 
 export const metadata: Metadata = {
+  title: 'SourSync | Quotations, Orders & Logistics in One Platform',
+  description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
   verification: {
     google: '5WX0RsC0ggsgDZK4zndZfeRGMMTKlixAa-h-s9Gkl7Q',
+  },
+  openGraph: {
+    title: 'SourSync | Quotations, Orders & Logistics in One Platform',
+    description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SourSync | Quotations, Orders & Logistics in One Platform',
+    description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
   },
 };
 
