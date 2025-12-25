@@ -17,6 +17,8 @@ import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import Image from 'next/image'
+import { BlogLanguageSwitcher } from '@/components/ui/blog-language-switcher'
+import { NextPreviousPosts } from '@/components/ui/next-previous-posts'
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>

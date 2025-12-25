@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createPublicClient } from '@/lib/supabase/server'
 import readingTime from 'reading-time'
 
 export interface PostFrontmatter {
@@ -53,7 +53,7 @@ export async function getAllPosts(
 ): Promise<Post[]> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       let query = supabase
         .from('posts')
         .select('*')
@@ -95,7 +95,7 @@ export async function getPostBySlug(
 ): Promise<Post | null> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       const { data, error } = await supabase
         .from('posts')
         .select('*')
@@ -107,7 +107,7 @@ export async function getPostBySlug(
         return null
       }
 
-      return {
+  return {
         ...data,
         content: data.content_mdx,
         readingTime: readingTime(data.content_mdx).text,
@@ -127,7 +127,7 @@ export async function getPostsByCategory(
 ): Promise<Post[]> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       const { data, error } = await supabase
         .from('posts')
         .select('*')
@@ -161,7 +161,7 @@ export async function getPostsByTag(
 ): Promise<Post[]> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       const { data, error } = await supabase
         .from('posts')
         .select('*')
@@ -172,8 +172,8 @@ export async function getPostsByTag(
         .order('published_at', { ascending: false })
 
       if (error || !data) {
-        return []
-      }
+    return []
+  }
 
       return data.map((post) => ({
         ...post,
@@ -192,7 +192,7 @@ export async function getPostsByTag(
 export async function getAllTags(language: string = 'en'): Promise<string[]> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       const { data, error } = await supabase
         .from('posts')
         .select('tags')
@@ -204,14 +204,14 @@ export async function getAllTags(language: string = 'en'): Promise<string[]> {
         return []
       }
 
-      const tags = new Set<string>()
+  const tags = new Set<string>()
       data.forEach((post) => {
         if (post.tags) {
-          post.tags.forEach((tag) => tags.add(tag))
+          post.tags.forEach((tag: string) => tags.add(tag))
         }
-      })
+  })
 
-      return Array.from(tags).sort()
+  return Array.from(tags).sort()
     },
     [`tags-${language}`],
     { revalidate: 3600 }
@@ -226,7 +226,7 @@ export async function getUniqueCategories(
 ): Promise<string[]> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       const { data, error } = await supabase
         .from('posts')
         .select('category')
@@ -262,7 +262,7 @@ export async function getRelatedPosts(
 ): Promise<Post[]> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       
       // First get the post to find its category and tags
       const { data: post } = await supabase
@@ -346,7 +346,7 @@ export async function getPostTranslations(
 
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       const { data, error } = await supabase
         .from('posts')
         .select('language, slug, title')
@@ -376,7 +376,7 @@ export async function getRedirect(
 ): Promise<{ to_path: string; status_code: number } | null> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       const { data, error } = await supabase
         .from('redirects')
         .select('to_path, status_code')
@@ -406,7 +406,7 @@ export async function getAdjacentPosts(
 ): Promise<{ next: Post | null; previous: Post | null }> {
   return unstable_cache(
     async () => {
-      const supabase = await createClient()
+      const supabase = createPublicClient()
       
       // Get current post
       const { data: currentPost } = await supabase
