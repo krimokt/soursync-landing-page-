@@ -1,10 +1,25 @@
-import { type NextRequest } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 import { isAdminEmail } from '@/lib/admin-allowlist'
 
 export async function middleware(request: NextRequest) {
   // Update session and get user
   const { supabaseResponse, user } = await updateSession(request)
+
+  // Handle legacy blog URLs: /blog/[slug] -> /blog/en/[slug]
+  const pathname = request.nextUrl.pathname
+  const blogSlugMatch = pathname.match(/^\/blog\/([^\/]+)$/)
+  if (blogSlugMatch) {
+    const slug = blogSlugMatch[1]
+    // Don't redirect if it's already a language code
+    const validLanguages = ['en', 'fr', 'ar', 'zh']
+    if (!validLanguages.includes(slug)) {
+      return NextResponse.redirect(
+        new URL(`/blog/en/${slug}`, request.url),
+        308 // Permanent redirect
+      )
+    }
+  }
 
   // Check if the route is protected
   if (request.nextUrl.pathname.startsWith('/admin')) {
@@ -43,5 +58,7 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
+
+
 
 

@@ -9,9 +9,10 @@ import type { Post } from '@/lib/posts'
 
 interface BlogListProps {
   posts: Post[]
+  language?: string
 }
 
-export function BlogList({ posts }: BlogListProps) {
+export function BlogList({ posts, language = 'en' }: BlogListProps) {
   return (
     <section className="py-16 md:py-24 bg-transparent">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -46,7 +47,7 @@ export function BlogList({ posts }: BlogListProps) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Link href={`/blog/${post.slug}`}>
+                <Link href={`/blog/${post.language || language}/${post.slug}`}>
                   <Card className="group relative overflow-hidden border-border bg-card hover:border-[rgb(6,182,212)]/30 hover:shadow-xl hover:shadow-[rgb(6,182,212)]/10 transition-all duration-300 cursor-pointer h-full">
                     {/* Hover glow effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[rgb(6,182,212)]/0 via-[rgb(6,182,212)]/0 to-[rgb(6,182,212)]/0 group-hover:from-[rgb(6,182,212)]/5 group-hover:via-[rgb(6,182,212)]/0 group-hover:to-[rgb(6,182,212)]/5 transition-all duration-300 pointer-events-none" />
@@ -75,7 +76,11 @@ export function BlogList({ posts }: BlogListProps) {
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1.5">
                             <Calendar className="w-4 h-4" />
-                            <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
+                            <span>
+                              {post.published_at
+                                ? format(new Date(post.published_at), 'MMM d, yyyy')
+                                : 'Draft'}
+                            </span>
                           </div>
                           <div className="flex items-center gap-1.5">
                             <Clock className="w-4 h-4" />
@@ -98,5 +103,7 @@ export function BlogList({ posts }: BlogListProps) {
     </section>
   )
 }
+
+
 
 

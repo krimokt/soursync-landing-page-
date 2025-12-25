@@ -78,7 +78,7 @@ const Hero2 = React.memo(() => {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder={t('hero.email_placeholder')}
                         required
-                        className="w-full px-6 py-4 rounded-full bg-background/50 border border-[rgb(6,182,212)]/30 text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[rgb(6,182,212)] focus:border-transparent transition-all"
+                        className="w-full px-6 py-4 rounded-full bg-black/50 border border-[rgb(6,182,212)]/30 text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[rgb(6,182,212)] focus:border-transparent transition-all"
                       />
                       <motion.div
                         className="absolute inset-0 rounded-full pointer-events-none"

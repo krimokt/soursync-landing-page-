@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Users, Eye, Smartphone, MousePointerClick, LogOut, Mail } from 'lucide-react'
+import { Users, Eye, Smartphone, MousePointerClick, LogOut, Mail, FileText } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 import Link from 'next/link'
 
@@ -46,6 +46,15 @@ export function AnalyticsDashboard({ user }: AnalyticsDashboardProps) {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Link href="/admin/blog">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 border-[rgb(6,182,212)] text-[rgb(6,182,212)] hover:bg-[rgb(6,182,212)]/10"
+              >
+                <FileText className="w-4 h-4" />
+                Blog
+              </Button>
+            </Link>
             <Link href="/admin/waitlist">
               <Button
                 variant="outline"

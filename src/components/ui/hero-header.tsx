@@ -7,6 +7,7 @@ import { Menu, X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLanguage, type Language } from '@/lib/language-context';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const menuItems = [
   { nameKey: 'nav.features', href: '/#features' },
@@ -94,6 +95,11 @@ export const HeroHeader = () => {
                 "flex flex-col lg:flex-row items-center gap-4 mt-6 lg:mt-0 lg:ml-8",
                 !isScrolled && !menuState ? "text-white" : "text-foreground"
               )}>
+                {/* Theme Toggle */}
+                <ThemeToggle className={cn(
+                  !isScrolled && !menuState ? "text-white hover:text-white/80" : ""
+                )} />
+                
                 {/* Language Switcher */}
                 <div className="relative">
                   <button

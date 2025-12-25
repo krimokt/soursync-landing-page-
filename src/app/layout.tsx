@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Inter, Tajawal, Noto_Sans_SC } from 'next/font/google';
 
 const inter = Inter({ 
@@ -49,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${tajawal.variable} ${notoSansSC.variable}`}>
+    <html lang="en" className={`${inter.variable} ${tajawal.variable} ${notoSansSC.variable}`} suppressHydrationWarning>
       <body className="antialiased">
         {/* Google Analytics */}
         <Script
@@ -65,9 +66,16 @@ export default function RootLayout({
           `}
         </Script>
         
-        <LanguageProvider>
-          {children}
-        </LanguageProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
