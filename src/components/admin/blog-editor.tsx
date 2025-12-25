@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
+import { FileText, Zap } from 'lucide-react'
 
 interface Post {
   id?: string
@@ -124,6 +126,28 @@ export function BlogEditor({ user, post }: BlogEditorProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Quick Import Link */}
+      {!post && (
+        <div className="p-4 bg-muted/50 border border-border rounded-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-foreground mb-1">
+                Quick Import Available
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Paste ContentShake format, HTML, or import from URL
+              </p>
+            </div>
+            <Link href="/admin/blog/quick-import">
+              <Button type="button" variant="outline" className="flex items-center gap-2">
+                <Zap className="w-4 h-4" />
+                Quick Import
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
+
       {error && (
         <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500">
           {error}

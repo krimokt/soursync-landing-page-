@@ -32,12 +32,20 @@ export default async function AdminBlogPage() {
                 Manage your blog posts and content
               </p>
             </div>
-            <a
-              href="/admin/blog/new"
-              className="px-4 py-2 bg-[rgb(6,182,212)] text-white rounded-md hover:bg-[rgb(6,182,212)]/90 transition-colors"
-            >
-              New Post
-            </a>
+            <div className="flex gap-3">
+              <a
+                href="/admin/blog/quick-import"
+                className="px-4 py-2 bg-muted border border-border text-foreground rounded-md hover:bg-muted/80 transition-colors"
+              >
+                Quick Import
+              </a>
+              <a
+                href="/admin/blog/new"
+                className="px-4 py-2 bg-[rgb(6,182,212)] text-white rounded-md hover:bg-[rgb(6,182,212)]/90 transition-colors"
+              >
+                New Post
+              </a>
+            </div>
           </div>
 
           <BlogListTable posts={posts || []} />
