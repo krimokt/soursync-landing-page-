@@ -33,9 +33,18 @@ export const PricingCard = React.memo(function PricingCard({ tier, paymentFreque
   const isPopular = tier.popular
   const [isModalOpen, setIsModalOpen] = React.useState(false)
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't open modal if clicking on the button (it has its own handler)
+    if ((e.target as HTMLElement).closest('button')) {
+      return
+    }
+    setIsModalOpen(true)
+  }
+
   return (
     <>
     <Card
+      onClick={handleCardClick}
       className={cn(
         "relative flex flex-col gap-8 overflow-hidden p-6 group h-full",
         "transition-all duration-300 ease-in-out",
@@ -102,7 +111,10 @@ export const PricingCard = React.memo(function PricingCard({ tier, paymentFreque
       <Button
         variant={isHighlighted ? "secondary" : "default"}
         className="w-full hover:bg-[rgb(6,182,212)] hover:text-white"
-        onClick={() => setIsModalOpen(true)}
+        onClick={(e) => {
+          e.stopPropagation()
+          setIsModalOpen(true)
+        }}
       >
         {tier.cta}
         <ArrowRight className="ml-2 h-4 w-4" />
