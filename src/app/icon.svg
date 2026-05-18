@@ -1,0 +1,31 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="22" fill="#0a0f1e"/>
+  <defs>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="bot" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#0f7aff"/>
+    </linearGradient>
+  </defs>
+  <!-- Upper sync arc + arrowhead (cyan) -->
+  <path
+    d="M 35 44 L 35 37 A 15 15 0 0 1 50 22 A 15 15 0 0 1 65 37 L 65 50 L 57 42 M 65 50 L 73 42"
+    stroke="url(#top)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+  <!-- Lower sync arc + arrowhead (blue) -->
+  <path
+    d="M 65 56 L 65 63 A 15 15 0 0 1 50 78 A 15 15 0 0 1 35 63 L 35 50 L 27 58 M 35 50 L 43 58"
+    stroke="url(#bot)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+</svg>
