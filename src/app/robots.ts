@@ -6,10 +6,23 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/login'],
+        disallow: ['/admin/', '/login', '/api/'],
+      },
+      {
+        userAgent: 'GPTBot',
+        disallow: ['/'],
+      },
+      {
+        userAgent: 'Google-Extended',
+        disallow: ['/'],
+      },
+      {
+        userAgent: 'Bytespider',
+        disallow: ['/'],
       },
     ],
     sitemap: 'https://soursync.com/sitemap.xml',
+    host: 'https://soursync.com',
   }
 }
 

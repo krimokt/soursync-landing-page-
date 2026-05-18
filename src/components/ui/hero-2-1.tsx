@@ -1,12 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { BeamsBackground } from "@/components/ui/beams-background";
 import { useLanguage } from '@/lib/language-context';
 import { ArrowRight, Check } from 'lucide-react';
 import { addToWaitlist, trackCTAClick } from '@/lib/waitlist';
 import { motion } from 'motion/react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const Hero2 = React.memo(() => {
   const { t } = useLanguage();
@@ -14,62 +19,114 @@ const Hero2 = React.memo(() => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    tl.fromTo(
+      badgeRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6 }
+    )
+      .fromTo(
+        headlineRef.current,
+        { opacity: 0, y: 80, skewY: 1 },
+        { opacity: 1, y: 0, skewY: 0, duration: 1.1 },
+        "-=0.3"
+      )
+      .fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.75 },
+        "-=0.6"
+      )
+      .fromTo(
+        formRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.65 },
+        "-=0.5"
+      )
+      .fromTo(
+        imageRef.current,
+        { opacity: 0, y: 80, scale: 0.97 },
+        { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: "power2.out" },
+        "-=0.4"
+      );
+  }, { scope: containerRef });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
 
     setIsSubmitting(true);
     try {
-      // Track CTA click
       trackCTAClick('hero_waitlist');
-
-      // Add to Supabase waitlist
-      await addToWaitlist({
-        email,
-        source: 'hero',
-      });
-
+      await addToWaitlist({ email, source: 'hero' });
       setSubmitted(true);
       setEmail("");
-      
-      // Reset success message after 5 seconds
       setTimeout(() => setSubmitted(false), 5000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error submitting email:", error);
-      // You could show an error message here
-      alert(error.message || 'Failed to join waitlist. Please try again.');
+      const msg = error instanceof Error ? error.message : 'Failed to join waitlist. Please try again.';
+      alert(msg);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <BeamsBackground 
-      className="min-h-screen bg-neutral-950 pb-0 w-full"
-    >
-      
-      {/* Content container */}
-      <div className="relative z-10 w-full">
+    <BeamsBackground className="min-h-screen bg-background pb-16 md:pb-24 w-full">
+      {/* Light-mode overlay: hides the dark beams in light mode */}
+      <div className="absolute inset-0 bg-[#f8fafc] dark:hidden z-0 pointer-events-none" />
 
-        {/* Hero section */}
-        <div className="container mx-auto mt-24 md:mt-32 px-4">
-          <div className="text-center mb-16">
-            <h1 className="mx-auto max-w-4xl text-5xl font-bold leading-tight text-white md:text-6xl lg:text-7xl tracking-tight antialiased mb-6">
-            {t('hero.title')}
-          </h1>
-            <p className="mx-auto max-w-2xl text-lg text-neutral-200 leading-relaxed font-normal antialiased mb-10">
-            {t('hero.subtitle')}
-          </p>
-            <div className="flex flex-col items-center justify-center space-y-4 mb-12">
+      <div className="relative z-10 w-full" ref={containerRef}>
+        <div className="container mx-auto mt-16 md:mt-24 lg:mt-32 px-4 md:px-6 max-w-7xl">
+          <div className="text-left mb-16 md:mb-20">
+            {/* Eyebrow badge */}
+            <div
+              ref={badgeRef}
+              style={{ opacity: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgb(6,182,212)]/20 bg-[rgb(6,182,212)]/5 mb-8"
+            >
+              <span className="text-[rgb(6,182,212)] text-xs font-semibold tracking-widest uppercase">
+                ◆ Sourcing Operations Platform
+              </span>
+            </div>
+
+            <h1
+              ref={headlineRef}
+              className="font-display max-w-5xl text-5xl md:text-7xl lg:text-8xl font-extrabold text-foreground mb-8 antialiased"
+              style={{
+                opacity: 0,
+                letterSpacing: '-0.04em',
+                lineHeight: 0.95,
+              }}
+            >
+              {t('hero.title')}
+            </h1>
+
+            <p
+              ref={subtitleRef}
+              className="max-w-xl text-lg text-muted-foreground leading-relaxed font-normal antialiased mb-12"
+              style={{ opacity: 0 }}
+            >
+              {t('hero.subtitle')}
+            </p>
+
+            <div ref={formRef} style={{ opacity: 0 }} className="flex flex-col items-start gap-4 mb-16">
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="w-full max-w-md">
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <motion.div 
+                    <motion.div
                       className="flex-1 relative"
                       initial={false}
-                      animate={{
-                        scale: email ? 1.02 : 1,
-                      }}
+                      animate={{ scale: email ? 1.01 : 1 }}
                       transition={{ duration: 0.2 }}
                     >
                       <input
@@ -78,14 +135,14 @@ const Hero2 = React.memo(() => {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder={t('hero.email_placeholder')}
                         required
-                        className="w-full px-6 py-4 rounded-full bg-black/50 border border-[rgb(6,182,212)]/30 text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[rgb(6,182,212)] focus:border-transparent transition-all"
+                        className="w-full px-5 py-4 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-[rgb(6,182,212)]/50 focus:border-[rgb(6,182,212)]/50 transition-all text-sm"
                       />
                       <motion.div
-                        className="absolute inset-0 rounded-full pointer-events-none"
+                        className="absolute inset-0 rounded-xl pointer-events-none"
                         initial={false}
                         animate={{
                           boxShadow: email
-                            ? '0 0 0 3px rgba(6,182,212,0.2), 0 0 20px rgba(6,182,212,0.3)'
+                            ? '0 0 0 1px rgba(6,182,212,0.3), 0 0 24px rgba(6,182,212,0.15)'
                             : '0 0 0 0px rgba(6,182,212,0)',
                         }}
                         transition={{ duration: 0.3 }}
@@ -94,49 +151,60 @@ const Hero2 = React.memo(() => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="h-14 px-8 rounded-full text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-[rgb(6,182,212)] hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="h-14 px-7 rounded-xl text-sm font-bold text-black bg-[rgb(6,182,212)] hover:bg-[rgb(6,182,212)]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap"
                     >
                       {isSubmitting ? (
                         <span className="flex items-center gap-2">
-                          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                          <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                           {t('hero.submitting')}
                         </span>
                       ) : (
                         <>
                           {t('hero.join_waitlist')}
-                          <ArrowRight className="w-5 h-5" />
+                          <ArrowRight className="w-4 h-4" />
                         </>
                       )}
                     </button>
                   </div>
                 </form>
               ) : (
-                <div className="flex items-center gap-2 px-6 py-4 rounded-full bg-[rgb(6,182,212)]/20 border border-[rgb(6,182,212)] text-[rgb(6,182,212)]">
-                  <Check className="w-5 h-5" />
-                  <span className="font-medium">{t('hero.success_message')}</span>
+                <div className="flex items-center gap-2 px-5 py-4 rounded-xl bg-[rgb(6,182,212)]/10 border border-[rgb(6,182,212)]/30 text-[rgb(6,182,212)]">
+                  <Check className="w-4 h-4 flex-shrink-0" />
+                  <span className="font-medium text-sm">{t('hero.success_message')}</span>
                 </div>
               )}
-              <p className="text-xs text-neutral-300 pt-2">
-                {t('hero.waitlist_note')}
-              </p>
+              <p className="text-xs text-muted-foreground/60 pl-1">{t('hero.waitlist_note')}</p>
             </div>
-            <p className="text-sm text-neutral-300 font-medium antialiased tracking-wide">
-            {t('hero.used_by')}
-          </p>
+
+            <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest">
+              {t('hero.used_by')}
+            </p>
           </div>
 
-            {/* Hero Image */}
-          <div className="relative mx-auto w-full max-w-[95vw]">
-            <div className="absolute inset-0 rounded-xl shadow-2xl bg-primary/5 blur-3xl opacity-50" />
-            <Image
-              src="/Soursync dashboard .png"
-              alt="SourSync Dashboard Interface"
-              width={1920}
-              height={1080}
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 1920px"
-              className="relative w-full h-auto shadow-2xl rounded-xl border-2 border-[rgb(6,182,212)]"
-            />
+          {/* Dashboard image with perspective tilt and cyan glow */}
+          <div
+            ref={imageRef}
+            style={{ opacity: 0, perspective: '1000px' }}
+            className="relative mx-auto w-full max-w-[95vw]"
+          >
+            <div
+              style={{
+                borderRadius: '12px',
+                transform: 'rotateX(3deg)',
+                transformOrigin: 'center bottom',
+              }}
+              className="shadow-[0_20px_80px_rgba(6,182,212,0.15)] dark:shadow-[0_40px_120px_rgba(6,182,212,0.25)]"
+            >
+              <Image
+                src="/Soursync dashboard .png"
+                alt="SourSync sourcing agent dashboard showing quotations, orders, shipping tracking, and client portal in one workspace"
+                width={1920}
+                height={1080}
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 1920px"
+                className="relative w-full h-auto rounded-xl border border-slate-200 dark:border-[rgb(6,182,212)]/20"
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -2,9 +2,7 @@
 
 import * as React from "react"
 import { motion } from "motion/react"
-
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 
 interface TabProps {
   text: string
@@ -23,34 +21,32 @@ export function Tab({
     <button
       onClick={() => setSelected(text)}
       className={cn(
-        "relative w-fit px-4 py-2 text-sm font-semibold capitalize",
-        "transition-colors",
+        "relative w-fit px-5 py-2 text-sm font-semibold capitalize rounded-lg",
+        "transition-colors duration-200",
         "flex items-center justify-center gap-2.5",
-        selected ? "text-primary-foreground" : "text-muted-foreground"
+        selected ? "text-black" : "text-muted-foreground hover:text-foreground"
       )}
     >
       {selected && (
         <motion.span
           layoutId="tab"
           transition={{ type: "spring", duration: 0.4 }}
-          className="absolute inset-0 z-0 rounded-full bg-primary shadow-sm"
+          className="absolute inset-0 z-0 rounded-lg bg-[rgb(6,182,212)] shadow-sm"
         />
       )}
       <span className="relative z-10">{text}</span>
       {discount && (
-        <Badge
-          variant="secondary"
+        <span
           className={cn(
-            "relative z-10 whitespace-nowrap shadow-none",
-            selected 
-              ? "bg-white/20 text-white border-white/30 border-[rgb(6,182,212)]/30" 
-              : "bg-muted/50 text-muted-foreground border-[rgb(6,182,212)]/20"
+            "relative z-10 text-xs font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap",
+            selected
+              ? "bg-black/20 text-black"
+              : "bg-[rgb(6,182,212)]/10 text-[rgb(6,182,212)]"
           )}
         >
-          Get 2 months free
-        </Badge>
+          -2mo
+        </span>
       )}
     </button>
   )
 }
-

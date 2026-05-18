@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
     // Get the app URL for logo
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://soursync.com'
-    const logoUrl = `${appUrl}/soursync-logo.svg`
+    const logoUrl = `${appUrl}/soursync-logo-new.png`
 
     // Send launch emails to all waitlist users
     const emailPromises = waitlistEntries.map((entry) =>

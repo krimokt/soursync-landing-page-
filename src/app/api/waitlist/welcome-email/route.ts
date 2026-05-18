@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     // Get the app URL for logo
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://soursync.com'
-    const logoUrl = `${appUrl}/soursync-logo.svg`
+    const logoUrl = `${appUrl}/soursync-logo-new.png`
 
     // Send welcome email
     const { data, error } = await resend.emails.send({

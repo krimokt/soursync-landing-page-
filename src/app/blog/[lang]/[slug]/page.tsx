@@ -181,7 +181,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     description: post.seo_description || post.description,
     image: post.cover_image
       ? `https://soursync.com${post.cover_image}`
-      : 'https://soursync.com/soursync-logo.svg',
+      : 'https://soursync.com/soursync-logo-new.png',
     datePublished: post.published_at,
     dateModified: post.updated_at,
     author: {
@@ -196,7 +196,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       name: 'SourSync',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://soursync.com/soursync-logo.svg',
+        url: 'https://soursync.com/soursync-logo-new.png',
       },
     },
     mainEntityOfPage: {

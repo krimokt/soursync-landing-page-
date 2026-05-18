@@ -56,10 +56,11 @@ function LoginForm() {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Image
-            src="/soursync-logo.svg"
+            src="/soursync-logo-new.png"
             alt="SourSync"
-            width={180}
-            height={40}
+            width={926}
+            height={280}
+        quality={100}
             className="brightness-0 invert"
           />
         </div>
@@ -135,10 +136,11 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-8">
             <Image
-              src="/soursync-logo.svg"
+              src="/soursync-logo-new.png"
               alt="SourSync"
-              width={180}
-              height={40}
+              width={926}
+              height={280}
+        quality={100}
               className="brightness-0 invert"
             />
           </div>

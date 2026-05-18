@@ -1,96 +1,158 @@
 "use client";
 
+import { useRef } from 'react';
 import { motion } from 'motion/react';
-import { Card, CardContent } from '@/components/ui/card'
-import { BlurredStagger } from '@/components/ui/blurred-stagger-text'
-import { Check, Users, FileText, Package, Truck, CreditCard, Database, Briefcase, Globe } from 'lucide-react'
+import { Users, FileText, Package, Truck, CreditCard, Database, Briefcase, Globe } from 'lucide-react';
 import { useLanguage } from '@/lib/language-context';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+const featureCards = [
+  { id: 1, icon: Users,      colSpan: "col-span-12 lg:col-span-7", large: true,  num: "01" },
+  { id: 2, icon: FileText,   colSpan: "col-span-12 lg:col-span-5", large: false, num: "02" },
+  { id: 3, icon: Package,    colSpan: "col-span-12 lg:col-span-5", large: false, num: "03" },
+  { id: 4, icon: Truck,      colSpan: "col-span-12 lg:col-span-7", large: true,  num: "04" },
+  { id: 5, icon: CreditCard, colSpan: "col-span-12 lg:col-span-7", large: true,  num: "05" },
+  { id: 6, icon: Database,   colSpan: "col-span-12 lg:col-span-5", large: false, num: "06" },
+  { id: 7, icon: Briefcase,  colSpan: "col-span-12 lg:col-span-5", large: false, num: "07" },
+  { id: 8, icon: Globe,      colSpan: "col-span-12 lg:col-span-7", large: true,  num: "08" },
+];
 
 export function Features() {
-    const { t } = useLanguage();
+  const { t } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
 
-    const featureCards = [
-        { id: 1, colSpan: "col-span-full lg:col-span-3", icon: Users },
-        { id: 2, colSpan: "col-span-full lg:col-span-3", icon: FileText },
-        { id: 3, colSpan: "col-span-full lg:col-span-3", icon: Package },
-        { id: 4, colSpan: "col-span-full lg:col-span-3", icon: Truck },
-        { id: 5, colSpan: "col-span-full lg:col-span-3", icon: CreditCard },
-        { id: 6, colSpan: "col-span-full lg:col-span-3", icon: Database },
-        { id: 7, colSpan: "col-span-full lg:col-span-3", icon: Briefcase },
-        { id: 8, colSpan: "col-span-full lg:col-span-3", icon: Globe },
-    ];
+  useGSAP(() => {
+    gsap.fromTo(
+      ".features-header",
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".features-header",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
 
-    return (
-        <section className="py-8 md:py-12 bg-transparent">
-            <div className="mx-auto max-w-3xl lg:max-w-5xl px-6">
-                {/* Title Section */}
-                <motion.div 
-                    className="text-center mb-16"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+    gsap.fromTo(
+      ".gsap-feature-card",
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.65,
+        ease: "power3.out",
+        stagger: 0.09,
+        scrollTrigger: {
+          trigger: ".gsap-feature-card",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  }, { scope: sectionRef });
+
+  return (
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background">
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+
+        {/* Section header - left aligned */}
+        <div className="features-header mb-20" style={{ opacity: 0 }}>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[rgb(6,182,212)] mb-5">
+            Platform Features
+          </p>
+          <h2
+            className="font-display text-3xl md:text-5xl lg:text-6xl font-extrabold text-foreground max-w-2xl"
+            style={{ letterSpacing: '-0.03em', lineHeight: 1.0 }}
+          >
+            {t('features.title')}
+          </h2>
+          <p className="text-base text-muted-foreground max-w-lg mt-5 leading-relaxed">
+            {t('features.subtitle')}
+          </p>
+        </div>
+
+        {/* Bento grid */}
+        <div className="grid grid-cols-12 gap-5">
+          {featureCards.map((card) => {
+            const Icon = card.icon;
+            return (
+              <div
+                key={card.id}
+                className={`gsap-feature-card ${card.colSpan}`}
+                style={{ opacity: 0 }}
+              >
+                <motion.div
+                  className="h-full"
+                  whileHover={{ y: -2, transition: { duration: 0.18 } }}
                 >
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 font-sans">
-                        <BlurredStagger text={t('features.title')} className="text-4xl md:text-5xl lg:text-6xl font-bold" />
-                    </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">{t('features.subtitle')}</p>
-                </motion.div>
+                  <div className="group relative h-full bg-card border border-border hover:border-[rgb(6,182,212)]/30 transition-all duration-300 rounded-2xl p-8 overflow-hidden cursor-default shadow-sm hover:shadow-md dark:shadow-none">
 
-                <div className="relative">
-                    <div className="relative z-10 grid grid-cols-6 gap-3">
-                        {featureCards.map((card, index) => {
-                            const Icon = card.icon;
-                            return (
-                                <motion.div
-                                    key={card.id}
-                                    className={card.colSpan}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
-                                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                                >
-                                    <Card className="group relative overflow-hidden border-border bg-card hover:border-[rgb(6,182,212)]/30 hover:shadow-xl hover:shadow-[rgb(6,182,212)]/10 transition-all duration-300 cursor-default h-full">
-                                        {/* Hover glow effect */}
-                                        <div className="absolute inset-0 bg-gradient-to-br from-[rgb(6,182,212)]/0 via-[rgb(6,182,212)]/0 to-[rgb(6,182,212)]/0 group-hover:from-[rgb(6,182,212)]/5 group-hover:via-[rgb(6,182,212)]/0 group-hover:to-[rgb(6,182,212)]/5 transition-all duration-300 pointer-events-none" />
-                                        
-                                        <CardContent className="pt-6 pb-6 flex flex-col h-full relative z-10">
-                                            <div className="space-y-4 flex-1">
-                                                <div className="flex items-center gap-3 mb-2">
-                                                    <motion.div 
-                                                        className="relative flex aspect-square size-12 rounded-full border border-border before:absolute before:-inset-2 before:rounded-full before:border border-border/50 bg-[rgb(6,182,212)]/10 group-hover:bg-[rgb(6,182,212)]/20 transition-all duration-300"
-                                                        whileHover={{ scale: 1.1, rotate: 5 }}
-                                                        transition={{ duration: 0.2 }}
-                                                    >
-                                                        <Icon className="m-auto size-6 text-[rgb(6,182,212)] group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
-                                                    </motion.div>
-                                                    <h2 className="text-xl font-semibold text-foreground group-hover:text-[rgb(6,182,212)] transition-colors duration-300">{t(`features.card${card.id}.title`)}</h2>
-                                                </div>
-                                                <p className="text-sm text-muted-foreground leading-relaxed">{t(`features.card${card.id}.desc`)}</p>
-                                                <ul className="space-y-2 mt-4">
-                                                    <li className="flex items-start gap-2 text-sm text-muted-foreground group-hover:text-foreground/90 transition-colors duration-300">
-                                                        <Check className="w-4 h-4 text-[rgb(6,182,212)] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300" />
-                                                        <span>{t(`features.card${card.id}.bullet1`)}</span>
-                                                    </li>
-                                                    <li className="flex items-start gap-2 text-sm text-muted-foreground group-hover:text-foreground/90 transition-colors duration-300">
-                                                        <Check className="w-4 h-4 text-[rgb(6,182,212)] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300" />
-                                                        <span>{t(`features.card${card.id}.bullet2`)}</span>
-                                                    </li>
-                                                    <li className="flex items-start gap-2 text-sm text-muted-foreground group-hover:text-foreground/90 transition-colors duration-300">
-                                                        <Check className="w-4 h-4 text-[rgb(6,182,212)] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300" />
-                                                        <span>{t(`features.card${card.id}.bullet3`)}</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </motion.div>
-                            );
-                        })}
+                    {/* Faint watermark number on large cards */}
+                    {card.large && (
+                      <span
+                        className="absolute top-6 right-8 text-[7rem] font-black text-foreground/[0.03] leading-none select-none pointer-events-none"
+                        style={{ fontVariantNumeric: 'tabular-nums' }}
+                      >
+                        {card.num}
+                      </span>
+                    )}
+
+                    {/* Subtle dot grid on large cards */}
+                    {card.large && (
+                      <div
+                        className="absolute inset-0 opacity-[0.025] pointer-events-none"
+                        style={{
+                          backgroundImage: 'radial-gradient(circle, rgb(6,182,212) 1px, transparent 1px)',
+                          backgroundSize: '28px 28px',
+                        }}
+                      />
+                    )}
+
+                    <div className="relative z-10 flex flex-col h-full gap-6">
+                      {/* Icon -- raw, no wrapper box */}
+                      <Icon
+                        size={32}
+                        className="text-[rgb(6,182,212)] flex-shrink-0"
+                        strokeWidth={1.5}
+                      />
+
+                      <div className="flex-1 space-y-3">
+                        <h3
+                          className="font-display text-xl font-semibold text-foreground"
+                          style={{ letterSpacing: '-0.01em' }}
+                        >
+                          {t(`features.card${card.id}.title`)}
+                        </h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {t(`features.card${card.id}.desc`)}
+                        </p>
+                      </div>
+
+                      <ul className="space-y-2.5">
+                        {[1, 2, 3].map((b) => (
+                          <li key={b} className="flex items-baseline gap-2.5 text-sm text-muted-foreground">
+                            <span className="text-[rgb(6,182,212)] font-bold leading-none flex-shrink-0 select-none" aria-hidden>·</span>
+                            <span>{t(`features.card${card.id}.bullet${b}`)}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                </div>
-            </div>
-        </section>
-    )
+                  </div>
+                </motion.div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
 }
