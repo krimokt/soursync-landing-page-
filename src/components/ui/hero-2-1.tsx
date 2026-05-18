@@ -29,35 +29,11 @@ const Hero2 = React.memo(() => {
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    tl.fromTo(
-      badgeRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.6 }
-    )
-      .fromTo(
-        headlineRef.current,
-        { opacity: 0, y: 80, skewY: 1 },
-        { opacity: 1, y: 0, skewY: 0, duration: 1.1 },
-        "-=0.3"
-      )
-      .fromTo(
-        subtitleRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.75 },
-        "-=0.6"
-      )
-      .fromTo(
-        formRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.65 },
-        "-=0.5"
-      )
-      .fromTo(
-        imageRef.current,
-        { opacity: 0, y: 80, scale: 0.97 },
-        { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: "power2.out" },
-        "-=0.4"
-      );
+    tl.from(badgeRef.current, { opacity: 0, y: 20, duration: 0.6 })
+      .from(headlineRef.current, { y: 60, skewY: 1, duration: 1.1 }, "-=0.3")
+      .from(subtitleRef.current, { opacity: 0, y: 30, duration: 0.75 }, "-=0.6")
+      .from(formRef.current, { opacity: 0, y: 20, duration: 0.65 }, "-=0.5")
+      .from(imageRef.current, { y: 60, scale: 0.97, duration: 1.4, ease: "power2.out" }, "-=0.4");
   }, { scope: containerRef });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -91,7 +67,6 @@ const Hero2 = React.memo(() => {
             {/* Eyebrow badge */}
             <div
               ref={badgeRef}
-              style={{ opacity: 0 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgb(6,182,212)]/20 bg-[rgb(6,182,212)]/5 mb-8"
             >
               <span className="text-[rgb(6,182,212)] text-xs font-semibold tracking-widest uppercase">
@@ -103,7 +78,6 @@ const Hero2 = React.memo(() => {
               ref={headlineRef}
               className="font-display max-w-5xl text-5xl md:text-7xl lg:text-8xl font-extrabold text-foreground mb-8 antialiased"
               style={{
-                opacity: 0,
                 letterSpacing: '-0.04em',
                 lineHeight: 0.95,
               }}
@@ -114,12 +88,11 @@ const Hero2 = React.memo(() => {
             <p
               ref={subtitleRef}
               className="max-w-xl text-lg text-muted-foreground leading-relaxed font-normal antialiased mb-12"
-              style={{ opacity: 0 }}
             >
               {t('hero.subtitle')}
             </p>
 
-            <div ref={formRef} style={{ opacity: 0 }} className="flex flex-col items-start gap-4 mb-16">
+            <div ref={formRef} className="flex flex-col items-start gap-4 mb-16">
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="w-full max-w-md">
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -184,7 +157,7 @@ const Hero2 = React.memo(() => {
           {/* Dashboard image with perspective tilt and cyan glow */}
           <div
             ref={imageRef}
-            style={{ opacity: 0, perspective: '1000px' }}
+            style={{ perspective: '1000px' }}
             className="relative mx-auto w-full max-w-[95vw]"
           >
             <div
