@@ -7,20 +7,48 @@ import { Footer } from "@/components/ui/footer";
 import { ChatSupportWidget } from "@/components/ui/chat-support-widget";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import { CTASection } from "@/components/ui/cta-section";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 
 export const metadata: Metadata = {
-  title: 'SourSync | Quotations, Orders & Logistics in One Platform',
-  description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
+  title: 'SourSync | Sourcing Agent Software — Quotations & Orders',
+  description: 'Replace WhatsApp and Excel with one platform. Manage quotations, orders, shipping, payments, and client portals for sourcing agents and import/export businesses.',
+  metadataBase: new URL('https://soursync.com'),
+  alternates: {
+    canonical: 'https://soursync.com',
+    languages: {
+      'en': 'https://soursync.com',
+      'fr': 'https://soursync.com/fr',
+      'ar': 'https://soursync.com/ar',
+      'zh-Hans': 'https://soursync.com/zh',
+      'x-default': 'https://soursync.com',
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  },
   openGraph: {
-    title: 'SourSync | Quotations, Orders & Logistics in One Platform',
-    description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
+    title: 'SourSync | Sourcing Agent Software',
+    description: 'Replace WhatsApp and Excel with one professional platform for sourcing agents.',
     type: 'website',
+    url: 'https://soursync.com',
+    locale: 'en_US',
+    siteName: 'SourSync',
+    images: [{
+      url: 'https://soursync.com/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'SourSync — Sourcing Agent Software',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SourSync | Quotations, Orders & Logistics in One Platform',
-    description: 'Stop managing sourcing projects in Excel and WhatsApp. SourSync centralizes quotations, orders, shipping status, and client reporting for modern sourcing teams.',
+    title: 'SourSync | Sourcing Agent Software',
+    description: 'Replace WhatsApp and Excel with one professional sourcing management system.',
+    images: ['https://soursync.com/og-image.png'],
   },
+  verification: { google: '7_bZOWyQUW8GTWsqUleYgooQyII5ivMZhh70tjhTlWo' },
 };
 
 // Lazy load below-fold sections for better initial load performance
@@ -47,8 +75,7 @@ const FAQSection = dynamic(
 export default function Home() {
   return (
     <main className="relative bg-background min-h-screen">
-      {/* Soft background - no gradients */}
-      
+      <SchemaMarkup />
       <ScrollRestore />
       <HeroHeader />
       <div className="relative z-10">

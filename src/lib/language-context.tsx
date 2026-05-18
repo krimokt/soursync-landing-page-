@@ -22,7 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.signup": "Sign Up",
     "nav.getstarted": "Get Started",
 
-    "hero.title": "One Platform to Run Your Sourcing & Logistics Business",
+    "hero.title": "Sourcing Agent Software to Run Your Entire Business",
     "hero.subtitle": "From product sourcing to payment tracking — manage everything with your team and clients in one simple dashboard.",
     "hero.email_placeholder": "Enter your email",
     "hero.join_waitlist": "Join Waitlist",
@@ -619,16 +619,21 @@ const translations: Record<Language, Record<string, string>> = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+export const LanguageProvider: React.FC<{
+  children: React.ReactNode;
+  initialLanguage?: Language;
+}> = ({ children, initialLanguage }) => {
+  const [language, setLanguage] = useState<Language>(initialLanguage ?? 'en');
 
   useEffect(() => {
-    // Detect browser language on initial load
-    const browserLang = navigator.language.split('-')[0] as Language;
-    if (['en', 'fr', 'ar', 'zh'].includes(browserLang)) {
-      setLanguage(browserLang);
+    // Only auto-detect if no initialLanguage was forced
+    if (!initialLanguage) {
+      const browserLang = navigator.language.split('-')[0] as Language;
+      if (['en', 'fr', 'ar', 'zh'].includes(browserLang)) {
+        setLanguage(browserLang);
+      }
     }
-  }, []);
+  }, [initialLanguage]);
 
   useEffect(() => {
     // Update text direction for Arabic
